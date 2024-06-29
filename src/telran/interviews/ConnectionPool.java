@@ -9,7 +9,7 @@ public class ConnectionPool {
     public ConnectionPool(int size) {
         this.maxCapacity = size;
         this.mapa = new LinkedHashMap<>(size, 0.75f, true) {
-        	
+            
             @Override
             protected boolean removeEldestEntry(Map.Entry<Long, Connection> eldest) {
                 return size() > maxCapacity;
@@ -19,11 +19,11 @@ public class ConnectionPool {
 
     public Connection getConnection(Connection connection) {
         long id = connection.id();
-        mapa.putIfAbsent(id, connection);
-        return mapa.get(id);
+        return mapa.computeIfAbsent(id, k -> connection);
     }
 
     public boolean isInPool(long id) {
         return mapa.containsKey(id);
     }
 }
+
