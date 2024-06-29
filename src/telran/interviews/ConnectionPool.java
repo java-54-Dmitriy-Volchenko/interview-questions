@@ -1,18 +1,29 @@
 package telran.interviews;
-//all methods should have O[1] complexity
+
+import java.util.*;
+
 public class ConnectionPool {
-	//TODO Data Structure
-	public ConnectionPool(int size) {
-		//TODO
-	}
-public Connection getConnection(Connection connection) {
-	//TODO return a connection from the pool if it exists
-	//otherwise creates new connection, adds in pool and returns new created connection
-	return null;
-}
-public boolean isInPool(long id) {
-	//TODO returns true if  a given connection exists in the pool
-	//otherwise returns false
-	return false;
-}
+    private final int maxCapacity;
+    private final LinkedHashMap<Long, Connection> mapa;
+
+    public ConnectionPool(int size) {
+        this.maxCapacity = size;
+        this.mapa = new LinkedHashMap<>(size, 0.75f, true) {
+        	
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<Long, Connection> eldest) {
+                return size() > maxCapacity;
+            }
+        };
+    }
+
+    public Connection getConnection(Connection connection) {
+        long id = connection.id();
+        mapa.putIfAbsent(id, connection);
+        return mapa.get(id);
+    }
+
+    public boolean isInPool(long id) {
+        return mapa.containsKey(id);
+    }
 }
