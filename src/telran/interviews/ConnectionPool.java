@@ -19,7 +19,7 @@ public class ConnectionPool {
 
     public Connection getConnection(Connection connection) {
         long id = connection.id();
-        return mapa.computeIfAbsent(id, k -> connection);
+        return mapa.computeIfAbsent(id, k -> new Connection(id));
     }
 
     public boolean isInPool(long id) {
