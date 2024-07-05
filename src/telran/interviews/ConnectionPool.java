@@ -1,9 +1,5 @@
 package telran.interviews;
 
-import java.util.*;
-
-package telran.interviews;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,4 +27,3 @@ public boolean isInPool(long id) {
 	return pool.containsKey(id);
 }
 }
-

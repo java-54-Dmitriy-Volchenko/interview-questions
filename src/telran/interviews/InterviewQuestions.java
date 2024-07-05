@@ -1,6 +1,7 @@
 package telran.interviews;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 public class InterviewQuestions {
 public static void displayOccurrences(String [] strings) {
@@ -73,12 +74,24 @@ public static Map<Integer, Integer> getMapSquares(List<Integer> numbers) {
 	return res;
 }
 public static boolean isAnagram(String word, String anagram) {
-	//TODO
-	//returns true if "anagram" string contains all
-	// letters from "word" in another order (case sensitive)
-	//O[N] (sorting is disallowed)
-	return false;
-}
+	
+	boolean res = false;
+	
+	 if (word.equals(anagram)) res = false;
+	 else if (word.length() != anagram.length()) res = false;
+
+	 else {
+		res = makeMapFrom(word).equals(makeMapFrom(anagram));
+        }
+        return res;
+	}
+
+	private static Map<String, Long> makeMapFrom (String str){
+		return   Arrays.stream(str.split(""))
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+	}
+	
+	
 public static List<DateRole> assignRoleDates(List<DateRole> rolesHistory,
 		List<LocalDate> dates) {
 	//TODO
