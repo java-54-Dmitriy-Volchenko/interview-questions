@@ -94,10 +94,19 @@ public static boolean isAnagram(String word, String anagram) {
 	
 public static List<DateRole> assignRoleDates(List<DateRole> rolesHistory,
 		List<LocalDate> dates) {
-	//TODO
-	//create List<DateRole> with roles matching with the given dates
-	//most effective data structure
-	return null;
+	
+	TreeMap<LocalDate, String> rolesMap = new TreeMap<>();
+    for (DateRole role : rolesHistory) {
+        rolesMap.put(role.date(), role.role());
+    }
+
+    return dates.stream()
+            .map(date-> {
+                Map.Entry<LocalDate, String> entry = rolesMap.floorEntry(date);
+                String role = (entry != null) ? entry.getValue() : null;
+                return new DateRole(date, role);
+            })
+            .collect(Collectors.toList());
 }
 public static void displayDigitsStatistics() {
 	//TODO
