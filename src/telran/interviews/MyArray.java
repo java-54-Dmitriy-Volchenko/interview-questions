@@ -1,35 +1,38 @@
 package telran.interviews;
 
 import java.util.HashMap;
-import java.util.Map;
 
+//all methods must have complexity O[1]
 public class MyArray<T> {
-    private Map<Integer, T> values;
-    private int size;
-    private T valueForSetAll;
-
-    public MyArray(int size) {
-        this.size = size;
-        values = new HashMap<>();
-        valueForSetAll = null;
-    }
-
-    public void setAll(T value) {
-        valueForSetAll = value;
-        values = new HashMap<>();
-    }
-
-    public void set(int index, T value) {
-        if (index < 0 || index >= size) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-        values.put(index, value);
-    }
-
-    public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-        return values.getOrDefault(index, valueForSetAll);
-    }
+ private int size;
+ private T allValues;
+ private HashMap<Integer, T> updatedValues = new HashMap<>();
+	public void setAll(T value) {
+		//all array's elements should be set with a given value
+		updatedValues = new HashMap<>();
+		allValues = value;
+	}
+	public void set(int index, T value) {
+		//set new value at a given index
+		//throws ArrayIndexOutOfBoundsException for incorrect index
+		checkIndex(index);
+		updatedValues.put(index, value);
+	}
+	private void checkIndex(int index) {
+		if(index < 0 || index >= size) {
+			throw new ArrayIndexOutOfBoundsException(index);
+		}
+		
+	}
+	public T get(int index) {
+		//returns a value at a given index
+		//throws ArrayIndexOutOfBoundsException for incorrect index
+		checkIndex(index);
+		return updatedValues.getOrDefault(index, allValues);
+	}
+	public MyArray(int size) {
+		//creates the Array object for a given size
+		//with setting null's at each element
+		this.size = size;
+	}
 }

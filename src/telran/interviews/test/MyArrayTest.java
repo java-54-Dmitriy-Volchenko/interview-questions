@@ -2,71 +2,47 @@ package telran.interviews.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import telran.interviews.MyArray;
 
 class MyArrayTest {
-    private MyArray<Integer> myArray;
-
-    @BeforeEach
-    void setUp() {
-        myArray = new MyArray<>(1000000);
-        
-        
-    }
-
-    @Test
-    void testSetAll() {
-        long startTime = System.nanoTime();
-        myArray.setAll(100);
-        long duration = System.nanoTime() - startTime;
-        System.out.println("setAll duration: " + duration);
-       
-    }
-    @Test
-    void testSetAllOn() {
-        Integer[] array = new Integer[1000000];
-        long startTime = System.nanoTime();
-        for (Integer elem:array) {
-            elem = 100;
-        }
-        long duration = System.nanoTime() - startTime;
-        System.out.println("setAll (O(n)) duration: " + duration);
-       
-    }
-    @Test
-    void testSet() {
-        myArray.setAll(0);
-        long startTime = System.nanoTime();
-        myArray.set(100000, 100);
-        long duration = System.nanoTime() - startTime;
-        System.out.println("set duration: " + duration);
-        assertEquals(100, myArray.get(100000));
-    }
-
-    @Test
-    void testGet() {
-        myArray.setAll(0); 
-        myArray.set(100000, 100);
-        long startTime = System.nanoTime();
-        int value = myArray.get(100000);
-        long duration = System.nanoTime() - startTime;
-        System.out.println("get duration: " + duration);
-        assertEquals(100, value);
-    }
-
-  
-
-    @Test
-    void testArrayIndexOutOfBounds() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> myArray.set(-1, 100));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> myArray.set(10000000, 100));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> myArray.get(-1));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> myArray.get(10000000));
-    }
+private static final int N_ELEMENTS = 100_000_000;
+private static final Integer ALL_VALUES = 5;
+MyArray<Integer> myArray;
+@BeforeEach
+void setUp() {
+	myArray = new MyArray<>(N_ELEMENTS);
+	
 }
+	@Test
+	void setAllTest() {
+		runSetAllTest();
+	}
+	@Test
+	void setGetTest() {
+		int index = 10;
+		int value = 1000;
+		myArray.set(index, value);
+		assertEquals(value, myArray.get(index));
+		assertNull(myArray.get(index + 1));
+		assertThrowsExactly(ArrayIndexOutOfBoundsException.class,
+				() -> myArray.set(-index, value));
+		assertThrowsExactly(ArrayIndexOutOfBoundsException.class,
+				() -> myArray.set(N_ELEMENTS, value));
+		assertThrowsExactly(ArrayIndexOutOfBoundsException.class,
+				() -> myArray.get(-index));
+		assertThrowsExactly(ArrayIndexOutOfBoundsException.class,
+				() -> myArray.get(N_ELEMENTS));
+		runSetAllTest();
+		
+	}
+	private void runSetAllTest() {
+		myArray.setAll(ALL_VALUES);
+		for(int i = 0; i < N_ELEMENTS; i++) {
+			assertEquals(ALL_VALUES, myArray.get(i));
+		}
+	}
 
+}
