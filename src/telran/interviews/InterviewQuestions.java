@@ -109,15 +109,16 @@ public static List<DateRole> assignRoleDates(List<DateRole> rolesHistory,
             .collect(Collectors.toList());
 }
 public static void displayDigitsStatistics() {
-	//TODO
-	//display out statistics in the following format (example)
-	/* 1 -> <count of occurrences>
-	 * 2 -> .....
-	 * .........
-	 */
-	//sorted by counts of occurrences in the descending order
-	//takes 1000000 random numbers in range [0-Integer.MAX_VALUE)
-	//one pipeline with no additional yours methods
+	
+	   new Random().ints(1_000_000, 0, Integer.MAX_VALUE)
+       .flatMap(n -> String.valueOf(n).chars())
+       .boxed() //makes objects from primitives to have the opportunity makes map in collect step
+       .collect(Collectors.groupingBy(c -> c, Collectors.counting()))//makes map
+       .entrySet().stream()//stream of entries from map to sort result on the next step
+       .sorted(Map.Entry.<Integer, Long>comparingByValue(Comparator.reverseOrder()))//comparator from java.util found in Internet
+       .forEach(e -> System.out.printf("%d -> %d\n", e.getKey() - '0', e.getValue()));//solution  to get digits from ASCII code found in Internet
+
+	
 	
 }
 }
